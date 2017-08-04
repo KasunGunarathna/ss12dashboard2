@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}SS12{% endblock %}</title>
+    {% block stylesheets %}
+        {#<link rel="stylesheet" href={{ asset("bootstrap/css/bootstrap.css") }} type="text/css"/>#}
+        {#<link rel="stylesheet" href={{ asset("css/bootstrap.min.css") }} type="text/css">#}
+        {#<link rel="stylesheet" href={{ asset("css/jquery-ui.css") }} type="text/css">#}
+        <link rel="stylesheet" href={{ asset("css/font-awesome.css") }} type="text/css">
+        {#<link rel="stylesheet" href={{ asset("css/style.css") }} type="text/css">#}
+        <!-- Morris Charts CSS -->
+        <link href={{ asset("vendors/bower_components/morris.js/morris.css") }} rel="stylesheet" type="text/css"/>
+        <!-- Data table CSS -->
+        <link href={{ asset("vendors/bower_components/datatables/media/css/jquery.dataTables.min.css") }} rel="stylesheet" type="text/css"/>
+
+        <link href={{ asset("vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.css") }} rel="stylesheet" type="text/css">
+        <!-- Custom CSS -->
+        <link href={{ asset("dist/css/style.css") }} rel="stylesheet" type="text/css">
+        <style type="text/css">
+            .myButton {
+                font-size: large !important;
+                font-family: 'Open Sans', sans-serif !important;
+                color: white !important;
+            }
+
+            .panel-heading {
+                padding-bottom: 20px !important;
+                padding-top: 20px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .ma-0 {
+                border: medium !important;
+            }
+
+        </style>
+
+    {% endblock %}
+
+    {% block scripts %}
+        <script src={{ asset("jquery/jquery.js") }}></script>
+        <script src={{ asset("js/jquery-3.2.1.min.js") }}></script>
+        <script src={{ asset("js/bootstrap.min.js") }}></script>
+        <script src={{ asset("js/jquery-ui.js") }}></script>
+        <!-- jQuery -->
+        <script src={{ asset("vendors/bower_components/jquery/dist/jquery.min.js") }}></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src={{ asset("vendors/bower_components/bootstrap/dist/js/bootstrap.min.js") }}></script>
+
+        <script src={{ asset("vendors/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js") }}></script>
+        <script src={{ asset("dist/js/easypiechart-data.js") }}></script>
+
+        <!-- Data table JavaScript -->
+        <script src={{ asset("vendors/bower_components/datatables/media/js/jquery.dataTables.min.js") }}></script>
+
+        <!-- Slimscroll JavaScript -->
+        <script src={{ asset("dist/js/jquery.slimscroll.js") }}></script>
+
+        <!-- simpleWeather JavaScript -->
+        <script src={{ asset("vendors/bower_components/moment/min/moment.min.js") }}></script>
+        <script src={{ asset("vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js") }}></script>
+        <script src={{ asset("dist/js/simpleweather-data.js") }}></script>
+
+        <!-- Progressbar Animation JavaScript -->
+        <script src={{ asset("vendors/bower_components/waypoints/lib/jquery.waypoints.min.js") }}></script>
+        <script src={{ asset("vendors/bower_components/Counter-Up/jquery.counterup.min.js") }}></script>
+
+        <!-- Fancy Dropdown JS -->
+        <script src={{ asset("dist/js/dropdown-bootstrap-extended.js") }}></script>
+
+        <!-- Sparkline JavaScript -->
+        <script src={{ asset("vendors/jquery.sparkline/dist/jquery.sparkline.min.js") }}></script>
+
+        <!-- ChartJS JavaScript -->
+        <script src={{ asset("vendors/chart.js/Chart.min.js") }}></script>
+
+        <!-- Morris Charts JavaScript -->
+        <script src={{ asset("vendors/bower_components/raphael/raphael.min.js") }}></script>
+        <script src={{ asset("vendors/bower_components/morris.js/morris.min.js") }}></script>
+        <script src={{ asset("dist/js/morris-data.js") }}></script>
+
+        <script src={{ asset("vendors/bower_components/jquery-toast-plugin/dist/jquery.toast.min.js") }}></script>
+
+        <!-- Init JavaScript -->
+        <script src={{ asset("dist/js/init.js") }}></script>
+        <script src={{ asset("dist/js/dashboard-data.js") }}></script>
+
+        <script type="javascript">
+
+            document.getElementById("setDate").innerHTML = Date();
+
+        </script>
+
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+{% if app.user is not null %}
+    <a style="float: right;margin: 5px" class="btn btn-success" href="{{ url('logout') }}">LOGOUT</a>
+{% endif %}
+
+{% block body %}{% endblock %}
+{% block javascripts %}
+
+{% endblock %}
+</body>
+</html>

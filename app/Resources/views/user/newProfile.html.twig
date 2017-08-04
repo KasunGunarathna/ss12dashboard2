@@ -1,0 +1,325 @@
+{% extends 'baseForProfile.html.twig' %}
+
+{% block body %}
+    <!-- Preloader -->
+    <div class="preloader-it">
+        <div class="la-anim-1"></div>
+    </div>
+    <!-- /Preloader -->
+    <div class="wrapper">
+        <!-- Top Menu Items -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+
+            <a href="index.html"><img class="brand-img pull-left" src={{ asset("dist/img/logo.png") }} alt="brand"/></a>
+            <ul class="nav navbar-right top-nav pull-right">
+
+            </ul>
+
+        </nav>
+        <!-- /Top Menu Items -->
+
+
+        <!-- Main Content -->
+        <div class="page-wrapper">
+            <div class="container-fluid">
+
+                <!-- Title -->
+                <div class="row heading-bg panel-heading bg-red" role="tab">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h5 class="txt-light">Home</h5>
+                    </div>
+
+                    <!-- Date Time -->
+                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+
+                        <ol class="breadcrumb">
+                            <!--<li><a id="Date" href="index.html">Dashboard</a></li>-->
+                            <!--<li><a href="#"><span>dashboard</span></a></li>-->
+                            <li class="active"><a href="{{ path('logout') }}" id="setDate">logout</a></li>
+                        </ol>
+                    </div>
+                    <!-- /Breadcrumb -->
+                </div>
+                <!-- /Title -->
+
+                <!-- Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default card-view">
+                            <div class="panel-wrapper collapse in">
+                                <div class="panel-body">
+                                    <div class="panel-group accordion-struct" id="accordion_1" role="tablist"
+                                         aria-multiselectable="true">
+                                        {% block javascripts %}
+                                            <script>
+                                                $(document).ready(function () {
+                                                    console.log('ready');
+                                                    ajaxReq("ESp-01");
+                                                    var compartments = {{ compartments|json_encode|raw }};
+                                                    jQuery.each(compartments, function (i, compartment) {
+                                                        console.log(compartment.compartment_id);
+                                                        setInterval(function () {
+                                                            ajaxReq(compartment.compartment_id);
+                                                        }, 2000);
+                                                    });
+
+
+                                                    function ajaxReq(compartmentId) {
+//                    $.get("http://localhost/ss12dashboard/web/app_dev.php/api2",
+//                            {
+//                                'compartmentId': compartmentId
+//                            },
+//                            function (data) {
+//                                console.log(data[0]);
+//                                $("#" + compartmentId + "temp").html("temp: " + data[0].temp);
+//                                $("#" + compartmentId + "humid").html("humid: " + data[0].humid);
+//                                $("#" + compartmentId + "foodStatus").html("foodStatus: " + data[0].food_status);
+//                                $("#" + compartmentId + "timestamp").html("Time: " + data[0].time_stamp);
+//                            });
+                                                        $.ajax({
+                                                            type: "GET",
+                                                            headers: {
+                                                                'Accept': 'application/json',
+                                                                'Content-Type': 'text/plain'
+                                                            },
+                                                            dataType: "json",
+                                                            url: "http://45.55.91.141/ss12dashboard/web/app_dev.php/api2",
+                                                            data: {'compartmentId': compartmentId},
+                                                            success: function (data) {
+                                                                console.log(data[0]);
+                                                                $("#" + compartmentId + "temp").html(data[0].temp);
+                                                                $("#" + compartmentId + "humid").html(data[0].humid);
+                                                                $("#" + compartmentId + "foodStatus").html(data[0].food_status);
+                                                                $("#" + compartmentId + "timestamp").html(data[0].time_stamp);
+                                                            },
+                                                            error: function (xhr, ajaxOptions, thrownError) {
+                                                                console.log(xhr.status);
+                                                                console.log(thrownError);
+                                                            }
+                                                        });
+                                                    }
+
+                                                });
+                                            </script>
+                                        {% endblock %}
+
+                                        {#<h2>Hello {{ email }} helloooooooooooo</h2>#}
+                                        {% for compartment in compartments %}
+
+
+
+                                            <div class="panel panel-default">
+                                                <div class="row panel-heading" role="tab"
+                                                     id="heading_{{ compartment.compartmentId }}"
+                                                     style="background: #f05922">
+
+                                                    <div class="col-lg-3 col-md-3 col-sm-3">
+                                                        <a class="myButton" role="button" data-toggle="collapse"
+                                                           data-parent="#accordion_1"
+                                                           href="#collapse_{{ compartment.compartmentId }}"
+                                                           aria-expanded="true">{{ compartment.item }}
+                                                            : {{ compartment.compartmentId }}</a>
+                                                        {#<a href="{{ path('editCompartment') }}" >Edit</a>#}
+                                                        <a href="{{ url('editCompartment',{compartment_id: compartment.compartmentId }) }}" CLASS="btn btn-success pull-right" >Edit</a>
+                                                    </div>
+
+                                                </div>
+                                                <div id="collapse_{{ compartment.compartmentId }}"
+                                                     class="panel-collapse collapse out" role="tabpanel">
+                                                    <div class="panel-body">
+
+                                                        <!--data-percent="90" to-->
+                                                        <div class="row">
+
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                                                <div id="weather_{{ compartment.compartmentId }}"
+                                                                     class="panel panel-default card-view pa-0 weather-info">
+                                                                    <div class="panel-wrapper collapse in">
+                                                                        <div class="panel-body pa-0">
+                                                                            <div class="row ma-0">
+                                                                                <div class="col-xs-6 pa-0">
+                                                                                    <div class="left-block-wrap pa-30">
+                                                                                        <!--<p class="block nowday">Wednesday</p>-->
+                                                                                        <!--<span class="block nowdate">08/02/2017</span>-->
+                                                                                        <div class="left-block  mt-15"><span
+                                                                                                    class="block temprature"><span
+                                                                                                        id="{{ compartment.compartmentId }}temp"> 15</span><span
+                                                                                                        class="unit">°C</span></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-xs-6 pa-0">
+                                                                                    <div class="right-block-wrap pa-30">
+                                                                                        <div class="right-block"><span
+                                                                                                    class="block temprature-icon"><i
+                                                                                                        class="fa fa-thermometer-empty fa-3x"
+                                                                                                        aria-hidden="true"></i></span>
+                                                                                            <h6>Tempreture</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                                                <div id="weather_2"
+                                                                     class="panel panel-default card-view pa-0 weather-warning">
+                                                                    <div class="panel-wrapper collapse in">
+                                                                        <div class="panel-body pa-0">
+                                                                            <div class="row ma-0">
+                                                                                <div class="col-xs-6 pa-0">
+                                                                                    <div class="left-block-wrap pa-30">
+                                                                                        {#<p class="block nowday">Wednesday</p>#}
+                                                                                        {#<span class="block">{{ compartment.storeDate.date[:10] }}</span>#}
+                                                                                        <div class="left-block  mt-15"><span
+                                                                                                    class="block temprature"><span
+                                                                                                        id="{{ compartment.compartmentId }}humid"> 15</span>
+                                                                                                <span
+                                                                                                        class="unit">%</span></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-xs-6 pa-0">
+                                                                                    <div class="right-block-wrap pa-30">
+                                                                                        <div class="right-block"><span
+                                                                                                    class="block temprature-icon"><i
+                                                                                                        class="fa fa-sun-o fa-3x"
+                                                                                                        aria-hidden="true"></i></span>
+                                                                                            <h6>Humidity</h6>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                                                <div id="weather_5"
+                                                                     class="panel panel-default card-view pa-0 weather-danger">
+                                                                    <div class="panel-wrapper collapse in">
+                                                                        <div class="panel-body pa-0">
+                                                                            <div class="row ma-0">
+                                                                                <div class="col-xs-6 pa-0">
+                                                                                    <div class="left-block-wrap pa-30">
+                                                                                        {#<p class="block nowday">Wednesday</p>#}
+                                                                                        {#<span class="block nowdate">08/02/2017</span>#}
+                                                                                        <div class="left-block  mt-15"><span
+                                                                                                    class="block temprature"><span
+                                                                                                        id="{{ compartment.compartmentId }}foodStatus"> 15</span>
+                                                                                                <span
+                                                                                                        class="unit">g</span></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-xs-6 pa-0">
+                                                                                    <div class="right-block-wrap pa-30">
+                                                                                        <div class="right-block"><span
+                                                                                                    class="block temprature-icon"><i
+                                                                                                        class="fa fa-ticket fa-3x"
+                                                                                                        aria-hidden="true"></i></span>
+                                                                                            <h6>Weight</h6></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                                                <div id="weather_6"
+                                                                     class="panel panel-default card-view pa-0 weather-danger">
+                                                                    <div class="panel-wrapper collapse in">
+                                                                        <div class="panel-body pa-0">
+                                                                            <div class="row ma-0">
+                                                                                <div class="col-xs-6 pa-0">
+                                                                                    <div class="left-block-wrap pa-30">
+                                                                                        <span class="block ">Expire Date : {{ compartment.expireDate.date[:10] }}</span>
+                                                                                        <span class="block ">Store Date : {{ compartment.storeDate.date[:10] }}</span>
+                                                                                        <span id="{{ compartment.compartmentId }}timestamp"
+                                                                                              class="block ">Store Date : {{ compartment.storeDate.date[:10] }}</span>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-xs-6 pa-0">
+
+                                                                                    <div class="right-block-wrap pa-30">
+                                                                                        <div class="right-block"><span
+                                                                                                    class="block temprature-icon"><i
+                                                                                                        class="fa fa-calendar fa-3x"
+                                                                                                        aria-hidden="true"></i></span>
+                                                                                            <h6>Details</h6></div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                            {#<div style="background-color: #0088CC">#}
+
+                                            {#<h4 id="{{ compartment.compartmentId }}compartmentId"> {{ compartment.compartmentId }}</h4>#}
+                                            {#<h4 id="{{ compartment.compartmentId }}item"> {{ compartment.item }}</h4>#}
+                                            {#<h5 id="{{ compartment.compartmentId }}edate"> {{ compartment.expireDate.date[:10] }}</h5>#}
+                                            {#<h5 id="{{ compartment.compartmentId }}sdate"> {{ compartment.storeDate.date[:10] }}</h5>#}
+                                            {#<h5 id="{{ compartment.compartmentId }}temp"> {{ compartment.temp }}</h5>#}
+                                            {#<h5 id="{{ compartment.compartmentId }}humid"> {{ compartment.humid }}</h5>#}
+                                            {#<h5 id="{{ compartment.compartmentId }}foodStatus"> {{ compartment.food_status }}</h5>#}
+                                            {#<h5 id="{{ compartment.compartmentId }}timestamp"> {{ compartment.time_stamp }}</h5>#}
+                                            {#</div>#}
+                                        {% endfor %}
+                                        {#<button class="btn btn-primary" type="button" href="{{ path('newCompartment') }}">Add Compartment</button>#}
+                                        <div>
+                                            <a href="{{ path('newCompartment') }}" id="setDate">New Compartment</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Row -->
+
+                <!-- Row -->
+
+                <!-- Row -->
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12"></div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <div class="text-center">
+                        <img src={{ asset("dist/img/foot-logo.png") }}>
+                        <p>
+                            <i class="fa fa-copyright"></i> All rights reserved to
+                            <a href="#">Tech Knights</a></p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12"></div>
+            </div>
+            <!-- Footer -->
+            <footer class="footer container-fluid pl-30 pr-30">
+                <div class="row">
+
+                </div>
+            </footer>
+            <!-- /Footer -->
+
+        </div>
+        <!-- /Main Content -->
+
+    </div>
+
+{% endblock %}
